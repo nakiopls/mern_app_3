@@ -11,10 +11,13 @@ const ListadoProyectos = () => {
 
     useEffect(() => {
         obtenerProyectos();
+        // eslint-disable-next-line
     },[]);
 
-    if(proyects.lenght === 0 ) return null;
-
+    if(proyects.lenght === 0 ) {
+        return <p> No hay proyectos, agrega uno </p>
+    }
+    
     return (
         <ul className="listado-proyecto">
             {proyects.map(proyecto => (

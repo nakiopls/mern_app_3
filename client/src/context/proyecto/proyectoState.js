@@ -1,9 +1,15 @@
-import React from 'react'
+import React from 'react';
+
+import {v4 as uuid} from 'uuid';
 
 import {
     FORMULARIO_PROYECTO,
-    OBTENER_PROYECTOS} 
-from '../../types'
+    OBTENER_PROYECTOS,
+    AGREGAR_PROYECTO,
+    VALIDAR_FORMULARIO,
+    PROYECTO_ACTUAL,
+    ELIMINAR_PROYECTO
+} from '../../types'
 
 import proyectoContext from './proyectoContext'
 import proyectoReducer from './proyectoReducer'
@@ -20,7 +26,9 @@ const ProyectoState = props => {
 
     const initialState = {
         proyects : [],
-        form : false
+        form : false,
+        errorform: false ,
+        proyect: null
     }
 
     const [state,dispatch] = React.useReducer(proyectoReducer, initialState)
@@ -40,6 +48,40 @@ const ProyectoState = props => {
             type: OBTENER_PROYECTOS,
             payload: proyects
         })
+    }   
+
+    //agregar proyeto
+
+    const agregarProyecto = proyecto => {
+        proyecto.id = uuid();
+        //insertar proyecto con un dispatch
+        dispatch({
+            type: AGREGAR_PROYECTO,
+            payload: proyecto
+        })
+    }
+
+    //Validar el formuladio
+    const mostrarError = () => {
+        dispatch({
+            type: VALIDAR_FORMULARIO
+        })
+    }
+
+    // Seleccionar proyecto 
+    const proyectoActual = proyectoId => {
+        dispatch({
+            type: PROYECTO_ACTUAL,
+            payload: proyectoId
+        })
+    }
+
+    //Eliminar proyecto 
+    const eliminarProyecto = proyectoId => {
+        dispatch({
+            type: ELIMINAR_PROYECTO,
+            payload: proyectoId
+        })
     }
 
     return(
@@ -47,8 +89,14 @@ const ProyectoState = props => {
             value={{
                 proyects: state.proyects,
                 form: state.form,
+                errorform: state.errorform,
+                proyect: state.proyect,
                 mostrarFormulario,
-                obtenerProyectos
+                obtenerProyectos,
+                agregarProyecto,
+                mostrarError,
+                proyectoActual,
+                eliminarProyecto
             }}
         >
             {props.children}
