@@ -1,4 +1,4 @@
-import React,{useContext, useState} from 'react'
+import React,{useContext, useState, useEffect} from 'react'
 import proyectoContext from '../../context/proyecto/proyectoContext';
 import tareaContext from '../../context/tareas/tareaContext';
 
@@ -11,8 +11,19 @@ const FormTarea = () => {
 
     //obtener funcion de context tarea
     const tareasContext = useContext(tareaContext);
-    const {agregarTarea} = tareasContext;
+    const { errortarea,taskselect,agregarTarea,validarTarea,obtenerTareas,actualizarTarea } = tareasContext;
 
+    //detecta tarea seleccionada
+
+    useEffect(() => {
+        if(taskselect !== null){
+            setTarea(taskselect)
+        } else{
+            setTarea({
+                name:''
+            })
+        }
+    },[taskselect]); //detecta cuando la tarea seleccionada cambia 
 
     //state del form agregar tarea
     const[tarea, setTarea] = useState ({
@@ -37,14 +48,31 @@ const FormTarea = () => {
     const onSubmit = e => {
         e.preventDefault();
         //Validar
+        if(name.trim() === ''){
+            validarTarea();
+            return;
+        }
 
-        //pasar la validacion
+        //revisar si es edicion o agregar tarea
 
-        //agregar nueva tarea al state
-        tarea.proyectId = proyectoActual.id;
-        tarea.state = false;
-        agregarTarea(tarea);
+        if(taskselect === null) {            
+            //agregar nueva tarea al state
+            tarea.proyectId = proyectoActual.id;
+            tarea.state = false;
+            agregarTarea(tarea);
+        } else {
+            //actualziar tarea existente
+            actualizarTarea(tarea);
+        }
+
+
+
+        obtenerTareas(proyectoActual.id);
+
         //reiniicar state
+        setTarea({
+            name: ''
+        })
 
     }
 
@@ -67,11 +95,11 @@ const FormTarea = () => {
                     <input
                         type="submit"
                         className="btn btn-primario btn-submit btn-block"
-                        value="add task"
+                        value={taskselect ? 'Editar Tarea' : 'Agregar Tarea'}
                     />
                 </div>
             </form>
-            
+            {errortarea ? <p className="mensaje error"> Nombre de la tarea obligatorio </p> : null}
         </div>
     )
 }

@@ -4,6 +4,8 @@ import Tarea from './Tarea'
 import proyectoContext from '../../context/proyecto/proyectoContext';
 import tareaContext from '../../context/tareas/tareaContext';
 
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
+
 
 const ListadoTareas = () => {
 
@@ -34,11 +36,23 @@ const ListadoTareas = () => {
                 {tasksproyect.length === 0 
                     ? (<li className="tarea"><p>No hay tareas</p></li>)
                     
-                    : tasksproyect.map(tarea => (
-                        <Tarea
-                            tarea={tarea}
-                        />
-                    ))
+                    : 
+                        <TransitionGroup>
+                         {
+                             tasksproyect.map(tarea => (
+                                <CSSTransition
+                                    key={tarea.id}
+                                    timeout={200}
+                                    //en el css "tarea" tiene unas clases que realizan la animación
+                                    classNames="tarea"
+                                >
+                                    <Tarea                                        
+                                        tarea={tarea}
+                                    />
+                                </CSSTransition>
+                            ))
+                         }   
+                        </TransitionGroup>
                 }
             </ul>
             <button
