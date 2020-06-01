@@ -16,6 +16,7 @@ exports.crearUsuario = async (req,res) => {
     const { email,password } = req.body;
 
     try {
+        //verifica si esxiste el usuario
         let usuario = await Usuario.findOne({email});
 
         if(usuario){
