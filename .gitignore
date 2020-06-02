@@ -1,6 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-.env 
+client/.env 
+server/variables.env
 
 # dependencies
 server/node_modules
