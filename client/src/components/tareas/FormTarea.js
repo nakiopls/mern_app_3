@@ -7,36 +7,36 @@ const FormTarea = () => {
 
     //obteniendo state proyects desde el context
     const proyectosContext = useContext(proyectoContext);
-    const { proyect } = proyectosContext;
+    const { proyecto } = proyectosContext;
 
     //obtener funcion de context tarea
     const tareasContext = useContext(tareaContext);
-    const { errortarea,taskselect,agregarTarea,validarTarea,obtenerTareas,actualizarTarea } = tareasContext;
+    const { errortarea,tareaseleccionada,agregarTarea,validarTarea,obtenerTareas,actualizarTarea } = tareasContext;
 
     //detecta tarea seleccionada
 
     useEffect(() => {
-        if(taskselect !== null){
-            setTarea(taskselect)
+        if(tareaseleccionada !== null){
+            setTarea(tareaseleccionada)
         } else{
             setTarea({
-                name:''
+                nombre:''
             })
         }
-    },[taskselect]); //detecta cuando la tarea seleccionada cambia 
+    },[tareaseleccionada]); //detecta cuando la tarea seleccionada cambia 
 
     //state del form agregar tarea
     const[tarea, setTarea] = useState ({
-        name: ''
+        nombre: ''
     })
 
-    const { name } = tarea
+    const { nombre } = tarea
 
     //si el arreglo esta vacio y no hay proyecto seleccionado
-    if(!proyect) return null;
+    if(!proyecto) return null;
 
     //array destructuring para obtener el proyecto seleccionado
-    const [proyectoActual] = proyect;
+    const [proyectoActual] = proyecto;
 
     const handleChange = e => {
         setTarea({
@@ -48,14 +48,14 @@ const FormTarea = () => {
     const onSubmit = e => {
         e.preventDefault();
         //Validar
-        if(name.trim() === ''){
+        if(nombre.trim() === ''){
             validarTarea();
             return;
         }
 
         //revisar si es edicion o agregar tarea
 
-        if(taskselect === null) {            
+        if(tareaseleccionada === null) {            
             //agregar nueva tarea al state
             tarea.proyectId = proyectoActual.id;
             tarea.state = false;
@@ -71,7 +71,7 @@ const FormTarea = () => {
 
         //reiniicar state
         setTarea({
-            name: ''
+            nombre: ''
         })
 
     }
@@ -87,7 +87,7 @@ const FormTarea = () => {
                         className="input-text"
                         placeholder="Nombre tarea ..."
                         name="name"    
-                        value= {name}
+                        value= {nombre}
                         onChange={handleChange}               
                     />
                 </div>
@@ -95,7 +95,7 @@ const FormTarea = () => {
                     <input
                         type="submit"
                         className="btn btn-primario btn-submit btn-block"
-                        value={taskselect ? 'Editar Tarea' : 'Agregar Tarea'}
+                        value={tareaseleccionada ? 'Editar Tarea' : 'Agregar Tarea'}
                     />
                 </div>
             </form>

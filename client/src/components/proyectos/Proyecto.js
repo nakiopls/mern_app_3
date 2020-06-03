@@ -20,15 +20,16 @@ const Proyecto = ({proyecto}) => {
         obtenerTareas(id);// Filtrar las tareas cuando se de click
     }
 
+
     return (
         <li>
             <button
                 type="button"
-                className="btn btn-blank"
-                onClick={() => selecionarProyecto(proyecto.id)}
+                className="btn btn-blank-list"
+                onClick={() => selecionarProyecto(proyecto._id)}
             >
-            {proyecto.name}
-            </button>
+            {proyecto.nombre}
+            </button>            
         </li>
     )
 }

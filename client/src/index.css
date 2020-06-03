@@ -56,7 +56,9 @@ a {
   color: rgb(2,103,2);
 }
 .alerta-error {
-  background-color: rgb(230,78,78);
+  max-width: 600px;
+  margin: 2rem auto 0 auto;
+  background-color: rgb(170, 0, 0);
   color: var(--blanco);
 }
 
@@ -96,6 +98,15 @@ a {
   padding: 0;
   display: block;
   background-color: transparent;
+  color: var(--blanco);
+}
+
+.btn-blank-list {
+  margin: 0;
+  padding: 0;
+  display: block;
+  background-color: transparent;
+  justify-content: center;
 }
 
 @media (min-width: 768px) {

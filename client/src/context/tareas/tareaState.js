@@ -15,19 +15,19 @@ import {TAREAS_PROYECTO,
 
 const TareaState = props => {
     const initialState = {
-        tasks: [
-            {id:1, name: 'asd1', state_:true, proyectId:1},
-            {id:2, name: 'asd2', state_:false, proyectId:2},
-            {id:3, name: 'asd3', state_:true, proyectId:3},
-            {id:4, name: 'asd4', state_:false, proyectId:4},
-            {id:5, name: 'asd1', state_:true, proyectId:3},
-            {id:6, name: 'asd2', state_:false, proyectId:4},
-            {id:7, name: 'asd3', state_:true, proyectId:2},
-            {id:8, name: 'asd4', state_:false, proyectId:1}
+        tareas: [
+            {id:1, nombre: 'asd1', state_:true, proyectId:1},
+            {id:2, nombre: 'asd2', state_:false, proyectId:2},
+            {id:3, nombre: 'asd3', state_:true, proyectId:3},
+            {id:4, nombre: 'asd4', state_:false, proyectId:4},
+            {id:5, nombre: 'asd1', state_:true, proyectId:3},
+            {id:6, nombre: 'asd2', state_:false, proyectId:4},
+            {id:7, nombre: 'asd3', state_:true, proyectId:2},
+            {id:8, nombre: 'asd4', state_:false, proyectId:1}
         ],
-        tasksproyect: null,
+        tareasproyecto: null,
         errortarea: false,
-        taskselect: null
+        tareaseleccionada: null
     }
 
     const [state,dispatch] = useReducer(TareaReducer,initialState);
@@ -93,10 +93,10 @@ const TareaState = props => {
     return (
         <TareaContext.Provider
             value={{
-                tasks: state.tasks,
-                tasksproyect: state.tasksproyect,
+                tarea: state.tarea,
+                tareasproyecto: state.tareasproyecto,
                 errortarea: state.errortarea,
-                taskselect: state.taskselect,
+                tareaseleccionada: state.tareaseleccionada,
                 obtenerTareas,
                 agregarTarea,
                 validarTarea,

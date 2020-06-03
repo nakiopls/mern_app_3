@@ -1,34 +1,30 @@
 import React from 'react';
 
-import {v4 as uuid} from 'uuid';
-
 import {
     FORMULARIO_PROYECTO,
     OBTENER_PROYECTOS,
     AGREGAR_PROYECTO,
     VALIDAR_FORMULARIO,
     PROYECTO_ACTUAL,
-    ELIMINAR_PROYECTO
+    ELIMINAR_PROYECTO,
+    PROYECTO_ERROR
 } from '../../types'
 
-import proyectoContext from './proyectoContext'
-import proyectoReducer from './proyectoReducer'
+import proyectoContext from './proyectoContext';
+import proyectoReducer from './proyectoReducer';
+import clienteAxios from '../../config/axios';
 
 
 const ProyectoState = props => {
 
-    const proyects = [
-        {id: 1 , name: "asd1"},
-        {id: 2 , name: "asd2"},
-        {id: 3 , name: "asd3"},
-        {id: 4 , name: "asd4"}
-    ]
+
 
     const initialState = {
-        proyects : [],
+        proyectos : [],
         form : false,
         errorform: false ,
-        proyect: null
+        proyecto: null,
+        mensaje: null
     }
 
     const [state,dispatch] = React.useReducer(proyectoReducer, initialState)
@@ -43,22 +39,56 @@ const ProyectoState = props => {
 
     //obtener proyectos
 
-    const obtenerProyectos = () => {
-        dispatch({
-            type: OBTENER_PROYECTOS,
-            payload: proyects
-        })
+    const obtenerProyectos = async () => {
+        try {
+            const resultado = await clienteAxios.get('/api/proyectos');
+
+            dispatch({
+                type: OBTENER_PROYECTOS,
+                payload: resultado.data.proyectos
+            })
+            
+        } catch (error) {
+
+            const alerta = {
+                msg: 'hubo un error al obtener proyectos',
+                categoria: 'alerta-error'
+            }
+
+            dispatch({
+                type: PROYECTO_ERROR,
+                payload: alerta
+            })
+        }
     }   
 
     //agregar proyeto
 
-    const agregarProyecto = proyecto => {
-        proyecto.id = uuid();
+    const agregarProyecto = async proyecto => {
+        //proyecto.id = uuid();
         //insertar proyecto con un dispatch
-        dispatch({
-            type: AGREGAR_PROYECTO,
-            payload: proyecto
-        })
+        try {
+            console.log(proyecto);
+            //const proyecto_esp = {nombre: proyecto.name}
+            //console.log(proyecto_esp);
+            const resultado = await clienteAxios.post('/api/proyectos' , proyecto);
+            console.log(resultado);
+            dispatch ({
+                type: AGREGAR_PROYECTO,
+                payload: resultado.data 
+            })
+        } catch (error) {
+
+            const alerta = {
+                msg: 'hubo un error al agregar proyectos',
+                categoria: 'alerta-error'
+            }
+
+            dispatch({
+                type: PROYECTO_ERROR,
+                payload: alerta
+            })
+        }
     }
 
     //Validar el formuladio
@@ -77,20 +107,37 @@ const ProyectoState = props => {
     }
 
     //Eliminar proyecto 
-    const eliminarProyecto = proyectoId => {
-        dispatch({
-            type: ELIMINAR_PROYECTO,
-            payload: proyectoId
-        })
+    const eliminarProyecto = async proyectoId => {
+        try {
+
+            await clienteAxios.delete(`/api/proyectos/${proyectoId}`)
+
+            dispatch({
+                type: ELIMINAR_PROYECTO,
+                payload: proyectoId
+            })
+        } catch (error) {
+
+            const alerta = {
+                msg: 'hubo un error al eliminar proyecto',
+                categoria: 'alerta-error'
+            }
+
+            dispatch({
+                type: PROYECTO_ERROR,
+                payload: alerta
+            })
+        }
     }
 
     return(
         <proyectoContext.Provider
             value={{
-                proyects: state.proyects,
+                proyectos: state.proyectos,
                 form: state.form,
                 errorform: state.errorform,
-                proyect: state.proyect,
+                proyecto: state.proyecto,
+                mensaje:state.mensaje,
                 mostrarFormulario,
                 obtenerProyectos,
                 agregarProyecto,

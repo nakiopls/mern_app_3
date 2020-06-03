@@ -4,7 +4,8 @@ import {
         AGREGAR_PROYECTO,
         VALIDAR_FORMULARIO,
         PROYECTO_ACTUAL,
-        ELIMINAR_PROYECTO
+        ELIMINAR_PROYECTO,
+        PROYECTO_ERROR
 } from '../../types'
 
 
@@ -16,14 +17,15 @@ export default (state,action) => {
                 form:true
             }
         case OBTENER_PROYECTOS:
+            //console.log(action.payload)
             return{
                 ...state,
-                proyects: action.payload
+                proyectos: action.payload
             }
         case AGREGAR_PROYECTO:
             return{
                 ...state,
-                proyects: [...state.proyects, action.payload],
+                proyectos: [...state.proyectos, action.payload],
                 form: false,
                 errorform: false
             }
@@ -36,14 +38,19 @@ export default (state,action) => {
             return{
                 ...state,
                 // traeme solo el que es igual
-                proyect: state.proyects.filter(proyect => proyect.id === action.payload)
+                proyecto: state.proyectos.filter(proyecto => proyecto._id === action.payload)
             }            
         case ELIMINAR_PROYECTO:
             return{
                 ...state,
                 //filtes is like a "traeme todos los qe no son iguales"
-                proyects: state.proyects.filter(proyect => proyect.id !== action.payload),
-                proyect:null
+                proyectos: state.proyectos.filter(proyecto => proyecto._id !== action.payload),
+                proyecto:null
+            }
+        case PROYECTO_ERROR:
+            return{
+                ...state,
+                mensaje: action.payload
             }
         default:
             return state;

@@ -11,37 +11,37 @@ const ListadoTareas = () => {
 
     //obteniendo state proyects desde el context
     const proyectosContext = useContext(proyectoContext);
-    const { proyect,eliminarProyecto } = proyectosContext;
+    const { proyecto,eliminarProyecto } = proyectosContext;
     
     //obtener funcion de context tarea
     const tareasContext = useContext(tareaContext);
-    const {tasksproyect} = tareasContext;    
+    const {tareasproyecto} = tareasContext;    
 
     //si el arreglo esta vacio
-    if(!proyect) return <h2> Selecciona un proyecto</h2>
+    if(!proyecto) return <h2> Selecciona un proyecto</h2>
 
     //array destructuring
-    const [proyectoActual] = proyect;
+    const [proyectoActual] = proyecto;
 
 
     const onClickEliminar = () => {
-        eliminarProyecto(proyectoActual.id)
+        eliminarProyecto(proyectoActual._id)
     }
 
     return (
         <Fragment>
-            <h2>Proyecto: {proyectoActual.name} </h2>
+            <h2>Proyecto: {proyectoActual.nombre} </h2>
 
             <ul className="listado-tareas">
-                {tasksproyect.length === 0 
+                {tareasproyecto.length === 0 
                     ? (<li className="tarea"><p>No hay tareas</p></li>)
                     
                     : 
                         <TransitionGroup>
                          {
-                             tasksproyect.map(tarea => (
+                             tareasproyecto.map(tarea => (
                                 <CSSTransition
-                                    key={tarea.id}
+                                    key={tarea._id}
                                     timeout={200}
                                     //en el css "tarea" tiene unas clases que realizan la animación
                                     classNames="tarea"

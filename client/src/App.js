@@ -9,6 +9,14 @@ import ProyectoState from './context/proyecto/proyectoState';
 import TareaState from './context/tareas/tareaState';
 import AlertaState from './context/alertas/alertaState';
 import AuthState from './context/autenticacion/authState';
+import tokenAuth from './config/token';
+import RutaPrivada from './components/rutas/RutaPrivada';
+
+//Revisar si hay token
+const token = localStorage.getItem('token');
+if(token){
+  tokenAuth(token);
+}
 
 
 function App() {
@@ -24,7 +32,7 @@ function App() {
                 
                 <Route exact path="/" component={Login}/>
                 <Route exact path="/nueva-cuenta" component={NuevaCuenta}/>
-                <Route exact path="/proyectos" component={Proyectos}/>
+                <RutaPrivada exact path="/proyectos" component={Proyectos}/>
 
               </Switch>
             </Router>

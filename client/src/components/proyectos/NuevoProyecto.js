@@ -7,15 +7,15 @@ const NuevoProyecto = () => {
     const proyectosContext = useContext(proyectoContext);
     const { form,errorform,mostrarFormulario,agregarProyecto, mostrarError } = proyectosContext;
 
-    const[proyect, setProyect] = useState ({
-        name:'',
+    const[proyecto, setProyect] = useState ({
+        nombre:'',
     })  
 
-    const {name} = proyect;
+    const {nombre} = proyecto;
 
     const handleonChangeProyecto = e => {
         setProyect({
-            ...proyect,
+            ...proyecto,
             [e.target.name] : e.target.value
         })
     }
@@ -24,15 +24,15 @@ const NuevoProyecto = () => {
         e.preventDefault();
 
         //Validar
-        if(name === ''){
+        if(nombre === ''){
             mostrarError();
             return;
         }
         //add to state
-        agregarProyecto(proyect);
+        agregarProyecto(proyecto);
         //rr form
         setProyect({
-            name:''
+            nombre:''
         })
 
     }
@@ -62,8 +62,8 @@ const NuevoProyecto = () => {
                                 type="text"
                                 className="input-text"
                                 placeholder="Nombre Proyecto"
-                                name="name"
-                                value={name}
+                                name="nombre"
+                                value={nombre}
                                 onChange={handleonChangeProyecto}
                             />
                             <input

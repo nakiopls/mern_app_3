@@ -19,14 +19,14 @@ const AuthState = props => {
         token: localStorage.getItem('token'),
         autenticado: null,
         usuario: null,
-        mensaje: null 
+        mensaje: null,
+        cargando: true
 
     }
 
     const [state, dispatch] = useReducer(AuthReducer, initialState);
 
-//funciones
-
+    //funciones
 
     const registrarUsuario = async datos => {
         try {
@@ -53,7 +53,7 @@ const AuthState = props => {
         }
     }
 
-//Retornar usuario autenticado    
+    //Retornar usuario autenticado    
     const usuarioAutenticado = async () => {
         const token = localStorage.getItem('token');
         if (token){
@@ -77,6 +77,38 @@ const AuthState = props => {
         }
     }
 
+    //inicio de sesión 
+    const iniciarSesion = async datos => {
+        try {
+            const respuesta = await clienteAxios.post('/api/auth',datos);
+            //console.log(respuesta);
+            dispatch({
+                type: LOGIN_EXITOSO,
+                payload: respuesta.data
+            })
+
+            //obtener usuario
+            usuarioAutenticado();
+        } catch (error) {
+            console.log(error.response.data.msg);
+            const alerta = {
+                msg:error.response.data.msg,
+                categoria: 'alerta-error'
+            }
+            dispatch({
+                type: LOGIN_ERROR,
+                payload: alerta
+            })
+        }
+    }
+
+    //cerrar sesión
+    const cerrarSesion = async () => {
+        dispatch({
+            type: CERRAR_SESION
+        })
+    }
+
     return(
         <AuthContext.Provider
             value= {{
@@ -84,7 +116,11 @@ const AuthState = props => {
                 autenticado: state.autenticado,
                 usuario:state.usuario,
                 mensaje:state.mensaje,
-                registrarUsuario
+                cargando:state.cargando,
+                registrarUsuario,
+                iniciarSesion,
+                usuarioAutenticado,
+                cerrarSesion
             }}
         >
             {props.children}
