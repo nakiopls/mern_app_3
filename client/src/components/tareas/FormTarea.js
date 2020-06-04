@@ -39,6 +39,7 @@ const FormTarea = () => {
     const [proyectoActual] = proyecto;
 
     const handleChange = e => {
+        //console.log(e.target.value)
         setTarea({
             ...tarea,
             [e.target.name]: e.target.value
@@ -57,8 +58,7 @@ const FormTarea = () => {
 
         if(tareaseleccionada === null) {            
             //agregar nueva tarea al state
-            tarea.proyectId = proyectoActual.id;
-            tarea.state = false;
+            tarea.proyecto = proyectoActual._id;
             agregarTarea(tarea);
         } else {
             //actualziar tarea existente
@@ -86,7 +86,7 @@ const FormTarea = () => {
                         type="text"
                         className="input-text"
                         placeholder="Nombre tarea ..."
-                        name="name"    
+                        name="nombre"    
                         value= {nombre}
                         onChange={handleChange}               
                     />

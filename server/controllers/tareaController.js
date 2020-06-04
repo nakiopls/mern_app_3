@@ -46,7 +46,14 @@ exports.obtenerTareas = async (req, res ) => {
     try {
 
         //extraer proyecto y comprobar si existe
-        const {proyecto} = req.body;
+        //const {proyecto} = req.body;
+
+        //console.log("body",req.body);
+        //se hace el cambio a .query ya que se consume desde la api con un { params:{} }
+
+        const {proyecto} = req.query;
+
+        //console.log("query",req.query);
 
         const existeProyecto = await Proyecto.findById(proyecto);
         if(!existeProyecto) {
@@ -60,6 +67,9 @@ exports.obtenerTareas = async (req, res ) => {
         }
 
         //obtener taras por proyecto
+
+        //ordena del mas nuevo al más viejo de manera descendente
+        //const tarea = await Tarea.find({proyecto}).sort({creado: -1});
 
         const tarea = await Tarea.find({proyecto});
         res.json({tarea});
@@ -95,14 +105,22 @@ exports.actualizarTarea = async (req, res) => {
 
         //crear objetos con la nueva información
         const nuevaTarea = {};
-
+        nuevaTarea.nombre = nombre;
+        nuevaTarea.estado = estado;
+        /*
         if (nombre) {
             nuevaTarea.nombre = nombre;
         }
-        if (estado) {
+        if (estado) {            
             nuevaTarea.estado = estado;
+            //console.log("estado nueva tarea",nuevaTarea.estado)
+            //console.log("estado",estado)
+        }else{
+            nuevaTarea.estado = estado;
+            //console.log("estado nueva tarea else",nuevaTarea.estado)
+            //console.log("estado else",estado)
         }
-
+        */
         //guardar la tarea 
         tarea = await Tarea.findOneAndUpdate({ _id: req.params.id }, nuevaTarea, {new:true});
         res.json({ tarea })
@@ -119,7 +137,13 @@ exports.actualizarTarea = async (req, res) => {
 exports.eliminarTarea = async (req,res) => {
     try {
         //extraer proyecto y comprobar si existe
-        const {proyecto} = req.body;
+        //const {proyecto} = req.body;
+        //console.log("body",req.body);
+        //se hace el cambio a .query ya que se consume desde la api con un { params:{} }
+
+        const { proyecto } = req.query;
+
+        //console.log("query",req.query);
 
         //Si la tarea existe o no
         let  tarea = await Tarea.findById(req.params.id);

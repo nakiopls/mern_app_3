@@ -30,7 +30,7 @@ const ListadoProyectos = () => {
         return <p> No hay proyectos, agrega uno </p>
     }
     
-    console.log(proyectos);
+    //console.log(proyectos);
 
     return (
         <ul className="listado-proyecto">
